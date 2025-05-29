@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row align-items-center min-vh-75 hero-section">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+                <i class="fas fa-seedling me-3"></i>
+                Farm to Table Transparency
+            </h1>
+            <p class="lead mb-4">
+                Track your food's journey from farm to fork with blockchain-powered traceability. 
+                Support sustainable farming and make informed choices about your food.
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{{ url_for('marketplace') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-store me-2"></i>Explore Marketplace
+                </a>
+                <a href="{{ url_for('qr_scanner') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-qrcode me-2"></i>Scan QR Code
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center">
+            <svg width="400" height="300" viewBox="0 0 400 300" class="hero-illustration">
+                <!-- Farm illustration -->
+                <rect x="50" y="200" width="80" height="60" fill="#8B4513" class="farm-building"/>
+                <polygon points="50,200 90,150 130,200" fill="#CD853F" class="roof"/>
+                <rect x="75" y="220" width="15" height="25" fill="#654321" class="door"/>
+                <rect x="100" y="210" width="12" height="12" fill="#87CEEB" class="window"/>
+                
+                <!-- Fields -->
+                <rect x="150" y="220" width="200" height="40" fill="#228B22" class="field"/>
+                <rect x="150" y="200" width="200" height="20" fill="#32CD32" class="field"/>
+                
+                <!-- QR Code -->
+                <rect x="280" y="80" width="60" height="60" fill="#000" class="qr-code"/>
+                <rect x="285" y="85" width="10" height="10" fill="#fff"/>
+                <rect x="300" y="85" width="10" height="10" fill="#fff"/>
+                <rect x="315" y="85" width="10" height="10" fill="#fff"/>
+                <rect x="330" y="85" width="10" height="10" fill="#fff"/>
+                
+                <!-- Connecting lines -->
+                <path d="M 130 180 Q 200 100 280 120" stroke="#007bff" stroke-width="3" fill="none" class="connection-line"/>
+                
+                <!-- Truck -->
+                <rect x="200" y="240" width="40" height="20" fill="#FF6347" class="truck"/>
+                <circle cx="210" cy="265" r="8" fill="#000" class="wheel"/>
+                <circle cx="230" cy="265" r="8" fill="#000" class="wheel"/>
+                
+                <text x="200" y="30" text-anchor="middle" class="h4 text-primary">Blockchain Traceability</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row g-4 py-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-qrcode fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">QR Code Tracking</h5>
+                    <p class="card-text">Scan any product to see its complete journey from farm to your table.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Blockchain Security</h5>
+                    <p class="card-text">Immutable records ensure authentic and tamper-proof product information.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-handshake fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Direct Connection</h5>
+                    <p class="card-text">Connect directly with farmers and support sustainable agriculture.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-leaf fa-3x text-info"></i>
+                    </div>
+                    <h5 class="card-title">Sustainability</h5>
+                    <p class="card-text">Make informed choices with transparent sustainability scores.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Roles Section -->
+    <div class="py-5">
+        <h2 class="text-center mb-5">Join Our Community</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center role-card p-4">
+                    <i class="fas fa-tractor fa-4x text-primary mb-3"></i>
+                    <h4>Farmers</h4>
+                    <p>Share your story, build trust, and connect directly with consumers.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary">Join as Farmer</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center role-card p-4">
+                    <i class="fas fa-shopping-cart fa-4x text-success mb-3"></i>
+                    <h4>Consumers</h4>
+                    <p>Discover the story behind your food and support ethical farming.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-success">Join as Consumer</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center role-card p-4">
+                    <i class="fas fa-industry fa-4x text-warning mb-3"></i>
+                    <h4>Processors</h4>
+                    <p>Add value to products while maintaining transparency in the supply chain.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-warning">Join as Processor</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center role-card p-4">
+                    <i class="fas fa-store-alt fa-4x text-info mb-3"></i>
+                    <h4>Retailers</h4>
+                    <p>Offer verified products and build consumer trust through transparency.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-info">Join as Retailer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    {% if featured_products %}
+    <div class="py-5">
+        <h2 class="text-center mb-5">Featured Products</h2>
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 product-card">
+                    {% if product.image_path %}
+                    <img src="{{ url_for('uploaded_file', filename=product.image_path) }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-apple-alt fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description[:100] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">{{ product.category.title() }}</span>
+                            {% if product.price_per_unit %}
+                            <span class="fw-bold">${{ "%.2f"|format(product.price_per_unit) }}/{{ product.unit }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-primary w-100">
+                            <i class="fas fa-eye me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('marketplace') }}" class="btn btn-outline-primary btn-lg">
+                View All Products <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

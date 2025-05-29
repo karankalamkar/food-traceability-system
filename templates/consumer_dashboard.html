@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Consumer Dashboard - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-shopping-cart me-2 text-primary"></i>
+                Consumer Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('marketplace') }}" class="btn btn-primary w-100">
+                                <i class="fas fa-store me-2"></i>Browse Marketplace
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('qr_scanner') }}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-qrcode me-2"></i>Scan QR Code
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-success w-100">
+                                <i class="fas fa-heart me-2"></i>My Favorites
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-info w-100">
+                                <i class="fas fa-history me-2"></i>Order History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Ratings -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2 text-warning"></i>
+                        Recent Ratings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_ratings %}
+                    {% for rating in recent_ratings %}
+                    <div class="d-flex align-items-start border-bottom pb-3 mb-3">
+                        <div class="me-3">
+                            {% if rating.product.image_path %}
+                            <img src="{{ url_for('uploaded_file', filename=rating.product.image_path) }}" 
+                                 alt="{{ rating.product.name }}" class="rounded" width="60" height="60">
+                            {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-apple-alt text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ rating.product.name }}</h6>
+                            <div class="text-warning mb-1">
+                                {% for i in range(5) %}
+                                    {% if i < rating.rating %}
+                                    <i class="fas fa-star"></i>
+                                    {% else %}
+                                    <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if rating.review %}
+                            <p class="text-muted small mb-1">{{ rating.review[:100] }}...</p>
+                            {% endif %}
+                            <small class="text-muted">{{ rating.created_at.strftime('%B %d, %Y') }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-star fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">No ratings yet. Start exploring products!</p>
+                        <a href="{{ url_for('marketplace') }}" class="btn btn-primary btn-sm">
+                            Browse Products
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2 text-info"></i>
+                        Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                    {% for transaction in recent_transactions %}
+                    <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                        <div class="me-3">
+                            <div class="bg-{{ 'success' if transaction.status == 'completed' else 'warning' }} 
+                                        rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-{{ 'check' if transaction.status == 'completed' else 'clock' }} text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ transaction.product.name }}</h6>
+                            <p class="text-muted small mb-1">
+                                {{ transaction.transaction_type.title() }} - 
+                                {{ transaction.quantity }} {{ transaction.product.unit }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-{{ 'success' if transaction.status == 'completed' else 'warning' }}">
+                                    {{ transaction.status.title() }}
+                                </span>
+                                <small class="text-muted">${{ "%.2f"|format(transaction.amount) }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-shopping-cart fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">No recent activity. Start shopping!</p>
+                        <a href="{{ url_for('marketplace') }}" class="btn btn-primary btn-sm">
+                            Explore Products
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>
+                        Discover Fresh Products
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="fas fa-qrcode fa-3x text-primary mb-3"></i>
+                                <h6>Scan a QR Code</h6>
+                                <p class="text-muted small">Track the journey of any product from farm to table.</p>
+                                <a href="{{ url_for('qr_scanner') }}" class="btn btn-outline-primary btn-sm">
+                                    Start Scanning
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="fas fa-search fa-3x text-success mb-3"></i>
+                                <h6>Find Local Farmers</h6>
+                                <p class="text-muted small">Discover fresh produce from farmers in your area.</p>
+                                <a href="{{ url_for('marketplace') }}?category=vegetables" class="btn btn-outline-success btn-sm">
+                                    Browse Local
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="fas fa-leaf fa-3x text-info mb-3"></i>
+                                <h6>Sustainable Choices</h6>
+                                <p class="text-muted small">Find products with high sustainability scores.</p>
+                                <a href="{{ url_for('marketplace') }}" class="btn btn-outline-info btn-sm">
+                                    Go Green
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

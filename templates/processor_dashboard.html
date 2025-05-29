@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Processor Dashboard - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-industry me-2 text-primary"></i>
+                Processor Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-boxes fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">{{ available_products|length }}</h3>
+                    <p class="text-muted mb-0">Available Products</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                    <h3 class="mb-1">{{ processed_products|length }}</h3>
+                    <p class="text-muted mb-0">Processed</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                    <h3 class="mb-1">A1</h3>
+                    <p class="text-muted mb-0">Avg Grade</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                    <h3 class="mb-1">24</h3>
+                    <p class="text-muted mb-0">Pending Review</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('qr_scanner') }}" class="btn btn-primary w-100">
+                                <i class="fas fa-qrcode me-2"></i>Scan Product QR
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-clipboard-check me-2"></i>Grade Products
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-success w-100">
+                                <i class="fas fa-chart-bar me-2"></i>Processing Report
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-info w-100">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Available for Processing -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2 text-warning"></i>
+                        Available for Processing
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if available_products %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Farmer</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in available_products[:10] %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if product.image_path %}
+                                            <img src="{{ url_for('uploaded_file', filename=product.image_path) }}" 
+                                                 alt="{{ product.name }}" class="rounded me-2" width="30" height="30">
+                                            {% else %}
+                                            <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                                <i class="fas fa-apple-alt text-muted"></i>
+                                            </div>
+                                            {% endif %}
+                                            <span>{{ product.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ product.farmer.username }}</td>
+                                    <td>{{ product.quantity }} {{ product.unit }}</td>
+                                    <td>
+                                        <a href="{{ url_for('product_detail', product_id=product.id) }}" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            Review
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">No products available for processing</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recently Processed -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-check-circle me-2 text-success"></i>
+                        Recently Processed
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if processed_products %}
+                    {% for journey in processed_products[:5] %}
+                    <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                        <div class="me-3">
+                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ journey.product.name }}</h6>
+                            <p class="text-muted small mb-1">
+                                Grade: 
+                                <span class="badge bg-{{ 'success' if journey.product.grade == 'A1' else 'warning' }}">
+                                    {{ journey.product.grade or 'Not graded' }}
+                                </span>
+                            </p>
+                            <small class="text-muted">{{ journey.timestamp.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('product_journey', product_id=journey.product.id) }}" 
+                               class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-route"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-industry fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">No processed products yet</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Guidelines -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2 text-info"></i>
+                        Processing Guidelines
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-success">Grade A1 - Direct Consumption</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>No pesticides used</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Fresh and high quality</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Proper storage conditions</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Within expiry date</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-warning">Grade B1 - Processing Required</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-exclamation text-warning me-2"></i>Pesticides detected</li>
+                                <li><i class="fas fa-exclamation text-warning me-2"></i>Requires processing</li>
+                                <li><i class="fas fa-exclamation text-warning me-2"></i>Quality concerns</li>
+                                <li><i class="fas fa-exclamation text-warning me-2"></i>Storage issues</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}Marketplace - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>
+                <i class="fas fa-store me-2 text-primary"></i>
+                Marketplace
+            </h1>
+            <p class="lead text-muted">
+                Discover fresh, traceable products directly from verified farmers
+            </p>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('marketplace') }}">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="search" class="form-label">Search Products</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           value="{{ search_term }}" placeholder="Search by name or description...">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" id="category" name="category">
+                                    <option value="">All Categories</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat }}" {{ 'selected' if cat == current_category else '' }}>
+                                        {{ cat.title() }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sort" class="form-label">Sort By</label>
+                                <select class="form-select" id="sort" name="sort">
+                                    <option value="newest">Newest First</option>
+                                    <option value="price_low">Price: Low to High</option>
+                                    <option value="price_high">Price: High to Low</option>
+                                    <option value="rating">Highest Rated</option>
+                                    <option value="distance">Nearest First</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-filter me-2"></i>Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Filter Tags -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-wrap gap-2">
+                <span class="text-muted me-3">Quick filters:</span>
+                <a href="{{ url_for('marketplace') }}?category=vegetables" 
+                   class="badge bg-success text-decoration-none">
+                    <i class="fas fa-leaf me-1"></i>Vegetables
+                </a>
+                <a href="{{ url_for('marketplace') }}?category=fruits" 
+                   class="badge bg-warning text-decoration-none">
+                    <i class="fas fa-apple-alt me-1"></i>Fruits
+                </a>
+                <a href="{{ url_for('marketplace') }}?category=grains" 
+                   class="badge bg-info text-decoration-none">
+                    <i class="fas fa-seedling me-1"></i>Grains
+                </a>
+                <a href="{{ url_for('marketplace') }}?organic=true" 
+                   class="badge bg-primary text-decoration-none">
+                    <i class="fas fa-certificate me-1"></i>Organic Only
+                </a>
+                <a href="{{ url_for('marketplace') }}?local=true" 
+                   class="badge bg-secondary text-decoration-none">
+                    <i class="fas fa-map-marker-alt me-1"></i>Local Farmers
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    Products 
+                    {% if products.total %}
+                    <span class="text-muted">({{ products.total }} found)</span>
+                    {% endif %}
+                </h5>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="grid-view">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="list-view">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            {% if products.items %}
+            <div id="products-container" class="row g-4">
+                {% for product in products.items %}
+                <div class="col-lg-4 col-md-6 product-card-container">
+                    <div class="card h-100 product-card">
+                        <!-- Product Image -->
+                        <div class="position-relative">
+                            {% if product.image_path %}
+                            <img src="{{ url_for('uploaded_file', filename=product.image_path) }}" 
+                                 class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="fas fa-apple-alt fa-3x text-muted"></i>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Badges -->
+                            <div class="position-absolute top-0 start-0 p-2">
+                                {% if product.farmer.farmer_profile and product.farmer.farmer_profile.farming_type == 'organic' %}
+                                <span class="badge bg-success">Organic</span>
+                                {% endif %}
+                                {% if product.grade %}
+                                <span class="badge bg-{{ 'success' if product.grade == 'A1' else 'warning' }}">
+                                    Grade {{ product.grade }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Quick Actions -->
+                            <div class="position-absolute top-0 end-0 p-2">
+                                <button type="button" class="btn btn-light btn-sm rounded-circle" title="Add to Favorites">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            <!-- Product Info -->
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                {% if product.variety %}
+                                <p class="text-muted small mb-2">{{ product.variety }}</p>
+                                {% endif %}
+                                <p class="card-text">{{ product.description[:100] if product.description else 'No description available.' }}{% if product.description and product.description|length > 100 %}...{% endif %}</p>
+                                
+                                <!-- Farmer Info -->
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-user-tie text-primary me-2"></i>
+                                    <small class="text-muted">{{ product.farmer.username }}</small>
+                                </div>
+                                
+                                <!-- Location -->
+                                {% if product.farmer.farmer_profile and product.farmer.farmer_profile.location %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-map-marker-alt text-success me-2"></i>
+                                    <small class="text-muted">{{ product.farmer.farmer_profile.location }}</small>
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Sustainability Info -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-{{ 'check text-success' if not product.pesticide_used else 'times text-danger' }} me-2"></i>
+                                    <small class="text-muted">{{ 'No Pesticides' if not product.pesticide_used else 'Pesticides Used' }}</small>
+                                </div>
+                            </div>
+
+                            <!-- Rating -->
+                            {% if product.average_rating > 0 %}
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="text-warning me-2">
+                                    {% for i in range(5) %}
+                                        {% if i < product.average_rating %}
+                                        <i class="fas fa-star"></i>
+                                        {% else %}
+                                        <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <small class="text-muted">({{ "%.1f"|format(product.average_rating) }})</small>
+                            </div>
+                            {% endif %}
+
+                            <!-- Price and Quantity -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    {% if product.price_per_unit %}
+                                    <span class="h5 text-success mb-0">${{ "%.2f"|format(product.price_per_unit) }}</span>
+                                    <small class="text-muted">/ {{ product.unit }}</small>
+                                    {% else %}
+                                    <span class="text-muted">Price on request</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ product.quantity }} {{ product.unit }} available</small>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('product_detail', product_id=product.id) }}" 
+                                   class="btn btn-primary">
+                                    <i class="fas fa-eye me-2"></i>View Details
+                                </a>
+                                <div class="btn-group">
+                                    <a href="{{ url_for('product_journey', product_id=product.id) }}" 
+                                       class="btn btn-outline-info">
+                                        <i class="fas fa-route me-1"></i>Track Journey
+                                    </a>
+                                    {% if current_user.is_authenticated and current_user.role == 'consumer' %}
+                                    <button type="button" class="btn btn-outline-success">
+                                        <i class="fas fa-shopping-cart me-1"></i>Order
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if products.pages > 1 %}
+            <nav aria-label="Products pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('marketplace', page=products.prev_num, category=current_category, search=search_term) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in products.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != products.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('marketplace', page=page_num, category=current_category, search=search_term) }}">{{ page_num }}</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('marketplace', page=products.next_num, category=current_category, search=search_term) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% else %}
+            <!-- No Products Found -->
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No products found</h5>
+                <p class="text-muted">
+                    {% if search_term or current_category %}
+                    Try adjusting your search or filter criteria.
+                    {% else %}
+                    No products are currently available in the marketplace.
+                    {% endif %}
+                </p>
+                {% if search_term or current_category %}
+                <a href="{{ url_for('marketplace') }}" class="btn btn-primary">
+                    <i class="fas fa-refresh me-2"></i>Clear Filters
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Call to Action for Farmers -->
+    {% if not current_user.is_authenticated or current_user.role != 'farmer' %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Are you a farmer?</h5>
+                    <p class="card-text">
+                        Join TrustHarvest to sell your products directly to consumers with full transparency.
+                    </p>
+                    <a href="{{ url_for('register') }}" class="btn btn-light">
+                        <i class="fas fa-user-plus me-2"></i>Join as Farmer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // View toggle functionality
+    const gridView = document.getElementById('grid-view');
+    const listView = document.getElementById('list-view');
+    const productsContainer = document.getElementById('products-container');
+
+    if (gridView && listView) {
+        gridView.addEventListener('click', function() {
+            productsContainer.className = 'row g-4';
+            document.querySelectorAll('.product-card-container').forEach(card => {
+                card.className = 'col-lg-4 col-md-6 product-card-container';
+            });
+            gridView.classList.add('active');
+            listView.classList.remove('active');
+        });
+
+        listView.addEventListener('click', function() {
+            productsContainer.className = 'row g-2';
+            document.querySelectorAll('.product-card-container').forEach(card => {
+                card.className = 'col-12 product-card-container';
+            });
+            listView.classList.add('active');
+            gridView.classList.remove('active');
+        });
+    }
+
+    // Auto-submit form on filter change
+    document.getElementById('category').addEventListener('change', function() {
+        this.form.submit();
+    });
+
+    document.getElementById('sort').addEventListener('change', function() {
+        this.form.submit();
+    });
+});
+</script>
+{% endblock %}

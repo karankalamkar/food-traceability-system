@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-user-edit me-2 text-primary"></i>
+                Profile Settings
+            </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- User Information -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px;">
+                            <i class="fas fa-user fa-2x text-white"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-1">{{ current_user.username }}</h5>
+                    <p class="text-muted mb-2">{{ current_user.email }}</p>
+                    <span class="badge bg-{{ 'success' if current_user.role == 'farmer' else 'primary' if current_user.role == 'consumer' else 'warning' if current_user.role == 'processor' else 'info' }} fs-6">
+                        <i class="fas fa-{{ 'tractor' if current_user.role == 'farmer' else 'shopping-cart' if current_user.role == 'consumer' else 'industry' if current_user.role == 'processor' else 'store' }} me-1"></i>
+                        {{ current_user.role.title() }}
+                    </span>
+                    <hr>
+                    <p class="text-muted small mb-0">
+                        Member since {{ current_user.created_at.strftime('%B %Y') }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Stats for Farmers -->
+            {% if current_user.role == 'farmer' %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Quick Stats
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h5 class="mb-1">{{ current_user.products|length }}</h5>
+                            <small class="text-muted">Products</small>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="mb-1">
+                                {% set total_ratings = current_user.products|map(attribute='ratings')|sum(start=[])|length %}
+                                {{ total_ratings }}
+                            </h5>
+                            <small class="text-muted">Reviews</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Profile Form -->
+        <div class="col-lg-8">
+            {% if current_user.role == 'farmer' %}
+            <!-- Farmer Profile Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tractor me-2"></i>
+                        Farm Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.farm_name.label(class="form-label") }}
+                                {{ form.farm_name(class="form-control" + (" is-invalid" if form.farm_name.errors else "")) }}
+                                {% if form.farm_name.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.farm_name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control" + (" is-invalid" if form.location.errors else "")) }}
+                                {% if form.location.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.location.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.farm_size.label(class="form-label") }}
+                                <div class="input-group">
+                                    {{ form.farm_size(class="form-control" + (" is-invalid" if form.farm_size.errors else ""), step="0.1") }}
+                                    <span class="input-group-text">acres</span>
+                                    {% if form.farm_size.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.farm_size.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.farming_type.label(class="form-label") }}
+                                {{ form.farming_type(class="form-select" + (" is-invalid" if form.farming_type.errors else "")) }}
+                                {% if form.farming_type.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.farming_type.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.established_year.label(class="form-label") }}
+                                {{ form.established_year(class="form-control" + (" is-invalid" if form.established_year.errors else "")) }}
+                                {% if form.established_year.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.established_year.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.phone.label(class="form-label") }}
+                                {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else "")) }}
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), rows="4") }}
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Tell your story, farming philosophy, and what makes your farm special.</div>
+                        </div>
+
+                        <!-- Certification Section -->
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-certificate me-2 text-success"></i>
+                                    Certification Information
+                                </h6>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.certification.label(class="form-label") }}
+                                        {{ form.certification(class="form-control" + (" is-invalid" if form.certification.errors else "")) }}
+                                        {% if form.certification.errors %}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.certification.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">e.g., USDA Organic, Fair Trade, etc.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.certification_file.label(class="form-label") }}
+                                        {{ form.certification_file(class="form-control" + (" is-invalid" if form.certification_file.errors else "")) }}
+                                        {% if form.certification_file.errors %}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.certification_file.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        {% if farmer_profile and farmer_profile.certification_file %}
+                                        <div class="form-text">
+                                            Current file: 
+                                            <a href="{{ url_for('uploaded_file', filename=farmer_profile.certification_file) }}" 
+                                               target="_blank" class="text-decoration-none">
+                                                <i class="fas fa-file-pdf me-1"></i>View Certificate
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Coordinates -->
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                                    Geographic Location (Optional)
+                                </h6>
+                                <p class="text-muted small mb-3">
+                                    Add precise coordinates to help customers find your farm and verify authenticity.
+                                </p>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.latitude.label(class="form-label") }}
+                                        {{ form.latitude(class="form-control" + (" is-invalid" if form.latitude.errors else ""), step="any") }}
+                                        {% if form.latitude.errors %}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.latitude.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.longitude.label(class="form-label") }}
+                                        {{ form.longitude(class="form-control" + (" is-invalid" if form.longitude.errors else ""), step="any") }}
+                                        {% if form.longitude.errors %}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.longitude.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="get-location">
+                                    <i class="fas fa-crosshairs me-2"></i>Get Current Location
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('farmer_dashboard') }}" class="btn btn-outline-secondary me-md-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- General Profile Information for Non-Farmers -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>
+                        Account Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="{{ current_user.email }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Role</label>
+                            <input type="text" class="form-control" value="{{ current_user.role.title() }}" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Member Since</label>
+                            <input type="text" class="form-control" value="{{ current_user.created_at.strftime('%B %d, %Y') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Profile customization is currently available for farmers only. 
+                        {% if current_user.role == 'consumer' %}
+                        Use your dashboard to track your purchases and rate products.
+                        {% elif current_user.role == 'processor' %}
+                        Use your dashboard to process and grade products.
+                        {% elif current_user.role == 'retailer' %}
+                        Use your dashboard to manage inventory and verify products.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Additional Information -->
+    {% if current_user.role == 'farmer' %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>
+                        Tips for a Great Profile
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-camera fa-2x text-primary mb-2"></i>
+                                <h6>Add Photos</h6>
+                                <p class="text-muted small">Share photos of your farm, products, and farming process to build trust with customers.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-certificate fa-2x text-success mb-2"></i>
+                                <h6>Upload Certifications</h6>
+                                <p class="text-muted small">Display your organic, fair trade, or other certifications to attract conscious consumers.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-story fa-2x text-info mb-2"></i>
+                                <h6>Tell Your Story</h6>
+                                <p class="text-muted small">Share your farming philosophy and what makes your products special.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get current location functionality
+    const getLocationBtn = document.getElementById('get-location');
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
+
+    if (getLocationBtn && latitudeInput && longitudeInput) {
+        getLocationBtn.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                getLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Getting Location...';
+                getLocationBtn.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        latitudeInput.value = position.coords.latitude.toFixed(6);
+                        longitudeInput.value = position.coords.longitude.toFixed(6);
+                        
+                        getLocationBtn.innerHTML = '<i class="fas fa-check me-2"></i>Location Set';
+                        getLocationBtn.classList.remove('btn-outline-primary');
+                        getLocationBtn.classList.add('btn-success');
+                        
+                        setTimeout(() => {
+                            getLocationBtn.innerHTML = '<i class="fas fa-crosshairs me-2"></i>Get Current Location';
+                            getLocationBtn.classList.remove('btn-success');
+                            getLocationBtn.classList.add('btn-outline-primary');
+                            getLocationBtn.disabled = false;
+                        }, 2000);
+                    },
+                    function(error) {
+                        console.error('Error getting location:', error);
+                        getLocationBtn.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Location Error';
+                        getLocationBtn.classList.remove('btn-outline-primary');
+                        getLocationBtn.classList.add('btn-danger');
+                        
+                        setTimeout(() => {
+                            getLocationBtn.innerHTML = '<i class="fas fa-crosshairs me-2"></i>Get Current Location';
+                            getLocationBtn.classList.remove('btn-danger');
+                            getLocationBtn.classList.add('btn-outline-primary');
+                            getLocationBtn.disabled = false;
+                        }, 2000);
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

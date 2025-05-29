@@ -1,0 +1,14 @@
+# This file ensures the uploads directory is tracked by Git
+# The uploads directory is needed for storing user-uploaded files
+# such as product images, farmer certifications, and QR codes
+
+# This directory will contain:
+# - Product images
+# - Farmer certification documents
+# - Generated QR codes
+# - Profile pictures (future feature)
+
+# File naming conventions:
+# - product_{id}_{filename} for product images
+# - cert_{user_id}_{filename} for certification documents
+# - qr_{batch_id}_{uuid}.png for QR codes

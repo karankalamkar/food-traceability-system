@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="fas fa-plus me-2 text-primary"></i>
+                        Add New Product
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.name.label(class="form-label") }}
+                                {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                                {% if form.name.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.category.label(class="form-label") }}
+                                {{ form.category(class="form-select" + (" is-invalid" if form.category.errors else "")) }}
+                                {% if form.category.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.category.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.variety.label(class="form-label") }}
+                                {{ form.variety(class="form-control" + (" is-invalid" if form.variety.errors else "")) }}
+                                {% if form.variety.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.variety.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                {{ form.quantity.label(class="form-label") }}
+                                {{ form.quantity(class="form-control" + (" is-invalid" if form.quantity.errors else ""), step="0.01") }}
+                                {% if form.quantity.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.quantity.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                {{ form.unit.label(class="form-label") }}
+                                {{ form.unit(class="form-select" + (" is-invalid" if form.unit.errors else "")) }}
+                                {% if form.unit.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.unit.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.harvest_date.label(class="form-label") }}
+                                {{ form.harvest_date(class="form-control" + (" is-invalid" if form.harvest_date.errors else "")) }}
+                                {% if form.harvest_date.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.harvest_date.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.expiry_date.label(class="form-label") }}
+                                {{ form.expiry_date(class="form-control" + (" is-invalid" if form.expiry_date.errors else "")) }}
+                                {% if form.expiry_date.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.expiry_date.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">Optional - leave blank if not applicable</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.price_per_unit.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    {{ form.price_per_unit(class="form-control" + (" is-invalid" if form.price_per_unit.errors else ""), step="0.01") }}
+                                    {% if form.price_per_unit.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.price_per_unit.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-text">Optional - can be set later</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.image.label(class="form-label") }}
+                                {{ form.image(class="form-control" + (" is-invalid" if form.image.errors else "")) }}
+                                {% if form.image.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.image.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">Upload a photo of your product</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                {{ form.pesticide_used(class="form-check-input") }}
+                                {{ form.pesticide_used.label(class="form-check-label") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="pesticide-details" style="display: none;">
+                            {{ form.pesticide_details.label(class="form-label") }}
+                            {{ form.pesticide_details(class="form-control" + (" is-invalid" if form.pesticide_details.errors else ""), rows="3") }}
+                            {% if form.pesticide_details.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pesticide_details.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Please provide details about pesticides used</div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), rows="4") }}
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Tell the story of your product, farming practices, etc.</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{ url_for('farmer_dashboard') }}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-plus me-2"></i>Add Product
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Information Card -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle me-2 text-info"></i>
+                        What happens next?
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-qrcode fa-2x text-primary mb-2"></i>
+                            <h6>QR Code Generation</h6>
+                            <p class="small text-muted">A unique QR code will be generated for this product batch</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-blockchain fa-2x text-success mb-2"></i>
+                            <h6>Blockchain Entry</h6>
+                            <p class="small text-muted">Product information will be recorded on the blockchain</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-route fa-2x text-info mb-2"></i>
+                            <h6>Journey Tracking</h6>
+                            <p class="small text-muted">Track your product's journey from farm to consumer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const pesticideCheckbox = document.getElementById('pesticide_used');
+    const pesticideDetails = document.getElementById('pesticide-details');
+    
+    function togglePesticideDetails() {
+        if (pesticideCheckbox.checked) {
+            pesticideDetails.style.display = 'block';
+        } else {
+            pesticideDetails.style.display = 'none';
+        }
+    }
+    
+    pesticideCheckbox.addEventListener('change', togglePesticideDetails);
+    togglePesticideDetails(); // Initial check
+});
+</script>
+{% endblock %}

@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Farmer Dashboard - TrustHarvest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-tractor me-2 text-primary"></i>
+                Farmer Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-boxes fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">{{ total_products }}</h3>
+                    <p class="text-muted mb-0">Total Products</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+                    <h3 class="mb-1">${{ "%.2f"|format(total_revenue) }}</h3>
+                    <p class="text-muted mb-0">Total Revenue</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                    <h3 class="mb-1">{{ avg_rating }}</h3>
+                    <p class="text-muted mb-0">Average Rating</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-qrcode fa-2x text-info mb-2"></i>
+                    <h3 class="mb-1">{{ products|length }}</h3>
+                    <p class="text-muted mb-0">QR Codes Generated</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('new_product') }}" class="btn btn-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add New Product
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('profile') }}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-user-edit me-2"></i>Edit Profile
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="{{ url_for('marketplace') }}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-store me-2"></i>View Marketplace
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <a href="#" class="btn btn-outline-info w-100">
+                                <i class="fas fa-chart-bar me-2"></i>Analytics
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">My Products</h5>
+                    <a href="{{ url_for('new_product') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Add Product
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if products %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Batch ID</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Grade</th>
+                                    <th>Status</th>
+                                    <th>Rating</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if product.image_path %}
+                                            <img src="{{ url_for('uploaded_file', filename=product.image_path) }}" 
+                                                 alt="{{ product.name }}" class="rounded me-2" width="40" height="40">
+                                            {% else %}
+                                            <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-apple-alt text-muted"></i>
+                                            </div>
+                                            {% endif %}
+                                            <strong>{{ product.name }}</strong>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ product.category.title() }}</span>
+                                    </td>
+                                    <td>
+                                        <code>{{ product.batch_id }}</code>
+                                    </td>
+                                    <td>{{ product.quantity }} {{ product.unit }}</td>
+                                    <td>
+                                        {% if product.price_per_unit %}
+                                        ${{ "%.2f"|format(product.price_per_unit) }}
+                                        {% else %}
+                                        <span class="text-muted">Not set</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if product.grade %}
+                                        <span class="badge bg-{{ 'success' if product.grade == 'A1' else 'warning' }}">
+                                            {{ product.grade }}
+                                        </span>
+                                        {% else %}
+                                        <span class="text-muted">Not graded</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if product.status == 'available' else 'secondary' }}">
+                                            {{ product.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if product.average_rating > 0 %}
+                                        <div class="text-warning">
+                                            {% for i in range(5) %}
+                                                {% if i < product.average_rating %}
+                                                <i class="fas fa-star"></i>
+                                                {% else %}
+                                                <i class="far fa-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <small class="text-muted">({{ "%.1f"|format(product.average_rating) }})</small>
+                                        </div>
+                                        {% else %}
+                                        <span class="text-muted">No ratings</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('product_detail', product_id=product.id) }}" 
+                                               class="btn btn-outline-primary" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('product_journey', product_id=product.id) }}" 
+                                               class="btn btn-outline-info" title="View Journey">
+                                                <i class="fas fa-route"></i>
+                                            </a>
+                                            {% if product.qr_code_path %}
+                                            <a href="{{ url_for('uploaded_file', filename=product.qr_code_path) }}" 
+                                               target="_blank" class="btn btn-outline-success" title="Download QR Code">
+                                                <i class="fas fa-qrcode"></i>
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-seedling fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No products added yet</h5>
+                        <p class="text-muted">Start by adding your first product to the marketplace.</p>
+                        <a href="{{ url_for('new_product') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Add Your First Product
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
