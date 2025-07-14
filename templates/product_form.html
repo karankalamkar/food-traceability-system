@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add Product - TrustHarvest{% endblock %}
+{% block title %}Add Product - KrushiTech {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -98,7 +98,7 @@
                             <div class="col-md-6 mb-3">
                                 {{ form.price_per_unit.label(class="form-label") }}
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">₹</span>
                                     {{ form.price_per_unit(class="form-control" + (" is-invalid" if form.price_per_unit.errors else ""), step="0.01") }}
                                     {% if form.price_per_unit.errors %}
                                         <div class="invalid-feedback">

@@ -8,6 +8,110 @@ from models import User, FarmerProfile, Product, ProductJourney, Rating, Message
 from forms import RegistrationForm, LoginForm, FarmerProfileForm, ProductForm, RatingForm, MessageForm, ProductJourneyForm
 from utils import generate_qr_code, allowed_file
 import logging
+import qrcode
+import os
+from flask import url_for
+from app import app, db
+from werkzeug.utils import secure_filename
+from flask import render_template, current_app, url_for
+from app import app
+from flask import render_template
+from app import app
+from models import Product  # adjust this import as per your structure
+
+from models import Product, ProductJourney
+import uuid
+
+@app.route('/simulate_journey/<batch_id>')
+def simulate_journey(batch_id):
+    product = Product.query.filter_by(batch_id=batch_id).first()
+    if not product:
+        flash("Product not found!", "danger")
+        return redirect(url_for('home'))
+
+    # Clear existing journey (optional for testing)
+    ProductJourney.query.filter_by(product_id=product.id).delete()
+
+    # Add all stages
+    stages = [
+        { 
+            "stage": "harvested",
+            "location": "Farm",
+            "handler_name": "kamlesh",
+            "details": "Product harvested and added to system"
+        },
+        {
+            "stage": "graded",
+            "location": "Processing Unit",
+            "handler_name": "karan",
+            "details": "Product graded A and sent for distribution"
+        },
+        {
+            "stage": "dispatched",
+            "location": "Warehouse",
+            "handler_name": "atul",
+            "details": "Product dispatched to retailer"
+        },
+        {
+            "stage": "sold",
+            "location": "Retail Store",
+            "handler_name": "yash",
+            "details": "Product sold to customer"
+        }
+    ]
+
+    # Insert each stage
+    timestamp = datetime.utcnow()
+
+    for s in stages:
+        journey = ProductJourney(
+            product_id=product.id,
+            stage=s["stage"],
+            location=s["location"],
+            timestamp= timestamp,
+            details=s["details"],
+            handler_name=s["handler_name"],
+            blockchain_hash=str(uuid.uuid4().hex[:32])  # dummy hash
+        )
+        db.session.add(journey)
+
+    db.session.commit()
+    flash("Simulated full product journey added successfully!", "success")
+    return redirect(url_for('scan_result', batch_id=batch_id))
+
+@app.route('/scan/<batch_id>')
+def scan_qr(batch_id):
+    product = Product.query.filter_by(batch_id=batch_id).first()
+    if not product:
+        return "Product not found", 404
+
+    # Fetch the real-time journey data for this product
+    journey = ProductJourney.query.filter_by(product_id=product.id).order_by(ProductJourney.timestamp).all()
+
+    return render_template('product_detail.html', product=product, journey=journey)
+
+@app.route('/view_qr/<filename>')
+def view_qr(filename):
+    qr_url = url_for('static', filename=f"uploads/{filename}")
+    return render_template('view_qr.html', qr_url=qr_url)
+
+def generate_qr_code(batch_id):
+    # Find product by batch_id to get product.id to build url
+    product = Product.query.filter_by(batch_id=batch_id).first()
+    if not product:
+        # Handle missing product case or raise exception
+        return None
+    qr_url = url_for('scan_qr', batch_id=batch_id, _external=True)
+
+    qr = qrcode.make(qr_url)
+
+    folder = os.path.join(app.root_path, 'static', 'qrcodes')
+    os.makedirs(folder, exist_ok=True)
+
+    file_path = os.path.join(folder, f'{batch_id}.png')
+    qr.save(file_path)
+    
+    return f'static/qrcodes/{batch_id}.png'
 
 @app.route('/')
 def index():
@@ -70,7 +174,7 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
-
+#### krn
 @app.route('/farmer/dashboard')
 @login_required
 def farmer_dashboard():
@@ -187,7 +291,7 @@ def profile():
         
         return render_template('profile.html', form=form, farmer_profile=farmer_profile)
     
-    return render_template('profile.html')
+    return render_template('profile.html')           ####krn
 
 @app.route('/product/new', methods=['GET', 'POST'])
 @login_required
@@ -257,7 +361,7 @@ def product_journey(product_id):
     product = Product.query.get_or_404(product_id)
     journey_steps = ProductJourney.query.filter_by(product_id=product_id).order_by(ProductJourney.timestamp).all()
     return render_template('product_journey.html', product=product, journey_steps=journey_steps)
-
+#
 @app.route('/product/<int:product_id>/rate', methods=['POST'])
 @login_required
 def rate_product(product_id):
@@ -359,7 +463,7 @@ def update_journey(product_id):
     
     return redirect(url_for('product_journey', product_id=product_id))
 
-@app.route('/uploads/<filename>')
+@app.route('/<filename>')
 def uploaded_file(filename):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 

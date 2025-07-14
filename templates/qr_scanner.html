@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}QR Code Scanner - TrustHarvest{% endblock %}
+{% block title %}QR Code Scanner - KrushiTech {% endblock %}
 
 {% block extra_head %}
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // QR Code Scanner Functions
     function onScanSuccess(decodedText, decodedResult) {
-        console.log(`Code matched = ${decodedText}`, decodedResult);
+        console.log(`Code matched = ₹{decodedText}`, decodedResult);
         
         // Extract batch ID from the scanned text
         let batchId = decodedText;
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Redirect to scan result
         setTimeout(() => {
-            window.location.href = `/scan/${batchId}`;
+            window.location.href = `/scan/₹{batchId}`;
         }, 1000);
     }
 
@@ -255,8 +255,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateStatus(type, message) {
         statusDiv.innerHTML = `
-            <div class="alert alert-${type}">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+            <div class="alert alert-₹{type}">
+                <i class="fas fa-₹{type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
                 ${message}
             </div>
         `;

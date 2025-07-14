@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    <h2>Scan QR Code</h2>
+    <div id="reader" width="600px"></div>
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Code matched = ₹{decodedText}`, decodedResult);
+            window.location.href = "/scan/" + decodedText;
+        }
+
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess
+        );
+    </script>
+</body>
+</html>

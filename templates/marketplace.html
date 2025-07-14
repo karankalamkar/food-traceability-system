@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Marketplace - TrustHarvest{% endblock %}
+{% block title %}Marketplace - KrushiTech {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -202,7 +202,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
                                     {% if product.price_per_unit %}
-                                    <span class="h5 text-success mb-0">${{ "%.2f"|format(product.price_per_unit) }}</span>
+                                    <span class="h5 text-success mb-0">₹{{ "%.2f"|format(product.price_per_unit) }}</span>
                                     <small class="text-muted">/ {{ product.unit }}</small>
                                     {% else %}
                                     <span class="text-muted">Price on request</span>

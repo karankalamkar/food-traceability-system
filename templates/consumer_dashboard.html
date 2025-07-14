@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Consumer Dashboard - TrustHarvest{% endblock %}
+{% block title %}Consumer Dashboard - KrushiTech{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -133,7 +133,7 @@
                                 <span class="badge bg-{{ 'success' if transaction.status == 'completed' else 'warning' }}">
                                     {{ transaction.status.title() }}
                                 </span>
-                                <small class="text-muted">${{ "%.2f"|format(transaction.amount) }}</small>
+                                <small class="text-muted">₹{{ "%.2f"|format(transaction.amount) }}</small>
                             </div>
                         </div>
                     </div>

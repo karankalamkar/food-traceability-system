@@ -16,6 +16,9 @@ db = SQLAlchemy(model_class=Base)
 
 # Create the app
 app = Flask(__name__)
+app.config['BASE_URL'] = 'http://192.168.63.169:5000'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'  # make sure this is set correctly
+
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
@@ -52,3 +55,13 @@ with app.app_context():
     import models  # noqa: F401
     db.create_all()
     logging.info("Database tables created")
+
+with app.app_context():
+    # Import models to ensure they're registered
+    import models  # noqa: F401
+    db.create_all()
+    logging.info("Database tables created")
+#krn
+if __name__ == '__main__':
+    app.run(host='192.168.100.1',port='5000',debug=True)
+    

@@ -149,3 +149,7 @@ class Transaction(db.Model):
         import hashlib
         data = f"{self.user_id}{self.product_id}{self.amount}{self.created_at}{uuid.uuid4()}"
         return hashlib.sha256(data.encode()).hexdigest()
+
+
+
+

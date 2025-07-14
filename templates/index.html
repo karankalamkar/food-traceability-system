@@ -23,34 +23,8 @@
             </div>
         </div>
         <div class="col-lg-6 text-center">
-            <svg width="400" height="300" viewBox="0 0 400 300" class="hero-illustration">
-                <!-- Farm illustration -->
-                <rect x="50" y="200" width="80" height="60" fill="#8B4513" class="farm-building"/>
-                <polygon points="50,200 90,150 130,200" fill="#CD853F" class="roof"/>
-                <rect x="75" y="220" width="15" height="25" fill="#654321" class="door"/>
-                <rect x="100" y="210" width="12" height="12" fill="#87CEEB" class="window"/>
-                
-                <!-- Fields -->
-                <rect x="150" y="220" width="200" height="40" fill="#228B22" class="field"/>
-                <rect x="150" y="200" width="200" height="20" fill="#32CD32" class="field"/>
-                
-                <!-- QR Code -->
-                <rect x="280" y="80" width="60" height="60" fill="#000" class="qr-code"/>
-                <rect x="285" y="85" width="10" height="10" fill="#fff"/>
-                <rect x="300" y="85" width="10" height="10" fill="#fff"/>
-                <rect x="315" y="85" width="10" height="10" fill="#fff"/>
-                <rect x="330" y="85" width="10" height="10" fill="#fff"/>
-                
-                <!-- Connecting lines -->
-                <path d="M 130 180 Q 200 100 280 120" stroke="#007bff" stroke-width="3" fill="none" class="connection-line"/>
-                
-                <!-- Truck -->
-                <rect x="200" y="240" width="40" height="20" fill="#FF6347" class="truck"/>
-                <circle cx="210" cy="265" r="8" fill="#000" class="wheel"/>
-                <circle cx="230" cy="265" r="8" fill="#000" class="wheel"/>
-                
-                <text x="200" y="30" text-anchor="middle" class="h4 text-primary">Blockchain Traceability</text>
-            </svg>
+    <img src="{{ url_for('static', filename='dig.jpg') }}" class="img-fluid rounded" alt="Blockchain Farming">
+
         </div>
     </div>
 
@@ -162,7 +136,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="badge bg-primary">{{ product.category.title() }}</span>
                             {% if product.price_per_unit %}
-                            <span class="fw-bold">${{ "%.2f"|format(product.price_per_unit) }}/{{ product.unit }}</span>
+                            <span class="fw-bold">₹{{ "%.2f"|format(product.price_per_unit) }}/{{ product.unit }}</span>
                             {% endif %}
                         </div>
                     </div>

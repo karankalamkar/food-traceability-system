@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Farmer Dashboard - TrustHarvest{% endblock %}
+{% block title %}Farmer Dashboard - KrushiTech {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -28,7 +28,7 @@
             <div class="card stat-card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
-                    <h3 class="mb-1">${{ "%.2f"|format(total_revenue) }}</h3>
+                    <h3 class="mb-1">₹{{ "%.2f"|format(total_revenue) }}</h3>
                     <p class="text-muted mb-0">Total Revenue</p>
                 </div>
             </div>
@@ -140,7 +140,7 @@
                                     <td>{{ product.quantity }} {{ product.unit }}</td>
                                     <td>
                                         {% if product.price_per_unit %}
-                                        ${{ "%.2f"|format(product.price_per_unit) }}
+                                        ₹{{ "%.2f"|format(product.price_per_unit) }}
                                         {% else %}
                                         <span class="text-muted">Not set</span>
                                         {% endif %}

@@ -1,410 +1,440 @@
 /* TrustHarvest - Agricultural Theme CSS */
 
 :root {
-    /* Primary agricultural color palette */
-    --primary: 134 239 172; /* Green-400 */
-    --primary-dark: 22 163 74; /* Green-600 */
-    --secondary: 168 85 247; /* Purple-500 */
-    --success: 34 197 94; /* Green-500 */
-    --warning: 251 191 36; /* Amber-400 */
-    --danger: 239 68 68; /* Red-500 */
-    --info: 59 130 246; /* Blue-500 */
-    --light: 249 250 251; /* Gray-50 */
-    --dark: 17 24 39; /* Gray-900 */
-    
-    /* Agricultural earth tones */
-    --earth-brown: 92 51 23; /* Soil brown */
-    --leaf-green: 22 163 74; /* Fresh leaf green */
-    --harvest-gold: 245 158 11; /* Golden wheat */
-    --sky-blue: 56 189 248; /* Clear sky */
-    --organic-beige: 245 244 239; /* Natural beige */
-    
-    /* Bootstrap override colors in HSL format */
-    --bs-primary-rgb: 34, 197, 94;
-    --bs-success-rgb: 22, 163, 74;
-    --bs-warning-rgb: 245, 158, 11;
-    --bs-info-rgb: 56, 189, 248;
-    --bs-secondary-rgb: 107, 114, 128;
+  /* Primary agricultural color palette */
+  --primary: 134 239 172; /* Green-400 */
+  --primary-dark: 22 163 74; /* Green-600 */
+  --secondary: 168 85 247; /* Purple-500 */
+  --success: 34 197 94; /* Green-500 */
+  --warning: 251 191 36; /* Amber-400 */
+  --danger: 239 68 68; /* Red-500 */
+  --info: 59 130 246; /* Blue-500 */
+  --light: 249 250 251; /* Gray-50 */
+  --dark: 17 24 39; /* Gray-900 */
+
+  /* Agricultural earth tones */
+  --earth-brown: 92 51 23; /* Soil brown */
+  --leaf-green: 22 163 74; /* Fresh leaf green */
+  --harvest-gold: 245 158 11; /* Golden wheat */
+  --sky-blue: 56 189 248; /* Clear sky */
+  --organic-beige: 245 244 239; /* Natural beige */
+
+  /* Bootstrap override colors in HSL format */
+  --bs-primary-rgb: 34, 197, 94;
+  --bs-success-rgb: 22, 163, 74;
+  --bs-warning-rgb: 245, 158, 11;
+  --bs-info-rgb: 56, 189, 248;
+  --bs-secondary-rgb: 107, 114, 128;
 }
 
 /* Custom Bootstrap primary color */
 .btn-primary {
-    background-color: rgb(var(--bs-primary-rgb));
-    border-color: rgb(var(--bs-primary-rgb));
+  background-color: rgb(var(--bs-primary-rgb));
+  border-color: rgb(var(--bs-primary-rgb));
 }
 
 .btn-primary:hover {
-    background-color: rgb(22, 163, 74);
-    border-color: rgb(22, 163, 74);
+  background-color: rgb(22, 163, 74);
+  border-color: rgb(22, 163, 74);
 }
 
 .bg-primary {
-    background-color: rgb(var(--bs-primary-rgb)) !important;
+  background-color: rgb(var(--bs-primary-rgb)) !important;
 }
 
 .text-primary {
-    color: rgb(var(--bs-primary-rgb)) !important;
+  color: rgb(var(--bs-primary-rgb)) !important;
 }
 
 .navbar-dark .navbar-brand {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.5rem;
 }
 
 /* Hero section */
 .hero-section {
-    min-height: 75vh;
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+  min-height: 75vh;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(245, 158, 11, 0.1) 100%
+  );
 }
 
 .hero-illustration {
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 /* Feature cards */
 .feature-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .feature-icon {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 /* Role cards */
 .role-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(34, 197, 94, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(34, 197, 94, 0.1);
+  white-space: normal;
+  min-height: 320px;
 }
 
 .role-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
 }
 
 /* Product cards */
 .product-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .product-card .card-img-top {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .product-card:hover .card-img-top {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Dashboard stats cards */
 .stat-card {
-    transition: transform 0.3s ease;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ffffff 0%, rgba(34, 197, 94, 0.05) 100%);
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(34, 197, 94, 0.05) 100%);
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
+  transform: translateY(-3px);
 }
 
 /* Forms styling */
-.form-control, .form-select {
-    border: 2px solid rgba(34, 197, 94, 0.1);
-    border-radius: 8px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.form-control,
+.form-select {
+  border: 2px solid rgba(34, 197, 94, 0.1);
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: rgb(34, 197, 94);
-    box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
+.form-control:focus,
+.form-select:focus {
+  border-color: rgb(34, 197, 94);
+  box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
 }
 
 /* Custom badges */
 .badge {
-    border-radius: 6px;
-    font-weight: 500;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
 /* Agricultural-themed animations */
 @keyframes grow {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .seedling-animation {
-    animation: grow 2s ease-in-out infinite;
+  animation: grow 2s ease-in-out infinite;
 }
 
 /* QR Scanner specific styles */
 #qr-reader {
-    border: 3px solid rgb(34, 197, 94);
-    border-radius: 12px;
-    overflow: hidden;
+  border: 3px solid rgb(34, 197, 94);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 #qr-reader video {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 /* Journey timeline styles */
 .journey-timeline {
-    position: relative;
+  position: relative;
 }
 
 .timeline-item {
-    position: relative;
-    margin-bottom: 30px;
+  position: relative;
+  margin-bottom: 30px;
 }
 
 .timeline-marker {
-    position: absolute;
-    left: -30px;
-    top: 0;
-    z-index: 10;
+  position: absolute;
+  left: -30px;
+  top: 0;
+  z-index: 10;
 }
 
 .timeline-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .timeline-line {
-    position: absolute;
-    left: 22px;
-    top: 50px;
-    width: 3px;
-    height: calc(100% + 30px);
-    background: linear-gradient(to bottom, rgb(34, 197, 94), rgba(34, 197, 94, 0.3));
-    z-index: 1;
+  position: absolute;
+  left: 22px;
+  top: 50px;
+  width: 3px;
+  height: calc(100% + 30px);
+  background: linear-gradient(
+    to bottom,
+    rgb(34, 197, 94),
+    rgba(34, 197, 94, 0.3)
+  );
+  z-index: 1;
 }
 
 .timeline-content {
-    margin-left: 40px;
+  margin-left: 40px;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .hero-section {
-        min-height: 60vh;
-        text-align: center;
-    }
-    
-    .hero-illustration {
-        max-width: 300px;
-        height: auto;
-    }
-    
-    .journey-timeline {
-        padding-left: 20px;
-    }
-    
-    .timeline-marker {
-        left: -25px;
-    }
-    
-    .timeline-circle {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .timeline-line {
-        left: 17px;
-        width: 2px;
-    }
-    
-    .timeline-content {
-        margin-left: 25px;
-    }
+  .hero-section {
+    min-height: 60vh;
+    text-align: center;
+  }
+
+  .hero-illustration {
+    max-width: 300px;
+    height: auto;
+  }
+
+  .journey-timeline {
+    padding-left: 20px;
+  }
+
+  .timeline-marker {
+    left: -25px;
+  }
+
+  .timeline-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timeline-line {
+    left: 17px;
+    width: 2px;
+  }
+
+  .timeline-content {
+    margin-left: 25px;
+  }
 }
 
 /* Marketplace specific styles */
 .marketplace-filters {
-    background: rgba(34, 197, 94, 0.05);
-    border-radius: 12px;
+  background: rgba(34, 197, 94, 0.05);
+  border-radius: 12px;
 }
 
 .product-grid-item {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .price-highlight {
-    background: linear-gradient(135deg, rgb(245, 158, 11), rgb(245, 158, 11, 0.8));
-    color: white;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 600;
+  background: linear-gradient(
+    135deg,
+    rgb(245, 158, 11),
+    rgb(245, 158, 11, 0.8)
+  );
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
 }
 
 /* Scanner interface */
 .scanner-status {
-    background: rgba(34, 197, 94, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
 }
 
 /* Footer styling */
 footer {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    margin-top: auto;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  margin-top: auto;
 }
 
 /* Utility classes */
 .shadow-soft {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .border-soft {
-    border: 1px solid rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .bg-agricultural {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(245, 158, 11, 0.1) 100%
+  );
 }
 
 /* Loading states */
 .loading {
-    opacity: 0.6;
-    pointer-events: none;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
-    border: 2px solid transparent;
-    border-top: 2px solid rgb(34, 197, 94);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid rgb(34, 197, 94);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Accessibility improvements */
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Focus indicators */
 .btn:focus,
 .form-control:focus,
 .form-select:focus {
-    outline: 2px solid rgb(34, 197, 94);
-    outline-offset: 2px;
+  outline: 2px solid rgb(34, 197, 94);
+  outline-offset: 2px;
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-    .feature-card,
-    .product-card,
-    .stat-card {
-        border: 2px solid currentColor;
-    }
+  .feature-card,
+  .product-card,
+  .stat-card {
+    border: 2px solid currentColor;
+  }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Print styles */
 @media print {
-    .navbar,
-    .btn,
-    footer {
-        display: none !important;
-    }
-    
-    .card {
-        border: 1px solid #000 !important;
-        box-shadow: none !important;
-    }
-    
-    body {
-        background: white !important;
-        color: black !important;
-    }
+  .navbar,
+  .btn,
+  footer {
+    display: none !important;
+  }
+
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(34, 197, 94, 0.1);
+  background: rgba(34, 197, 94, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(34, 197, 94);
-    border-radius: 4px;
+  background: rgb(34, 197, 94);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgb(22, 163, 74);
+  background: rgb(22, 163, 74);
 }
 
 /* Error and success states */
 .is-invalid {
-    border-color: rgb(239, 68, 68) !important;
+  border-color: rgb(239, 68, 68) !important;
 }
 
 .is-valid {
-    border-color: rgb(34, 197, 94) !important;
+  border-color: rgb(34, 197, 94) !important;
 }
 
 .invalid-feedback {
-    color: rgb(239, 68, 68);
+  color: rgb(239, 68, 68);
 }
 
 .valid-feedback {
-    color: rgb(34, 197, 94);
+  color: rgb(34, 197, 94);
 }

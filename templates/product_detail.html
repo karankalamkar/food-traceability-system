@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ product.name }} - TrustHarvest{% endblock %}
+{% block title %}{{ product.name }} - KrushiTech {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -86,7 +86,7 @@
                         <div class="col-sm-6">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-dollar-sign text-success me-2"></i>
-                                <span><strong>Price:</strong> ${{ "%.2f"|format(product.price_per_unit) }}/{{ product.unit }}</span>
+                                <span><strong>Price:</strong> ₹{{ "%.2f"|format(product.price_per_unit) }}/{{ product.unit }}</span>
                             </div>
                         </div>
                         {% endif %}
